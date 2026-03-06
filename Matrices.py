@@ -1,19 +1,22 @@
 from typing import List
+import string
 
 class Matrix:
     def __init__(self, arg, val = 0):
+        self.__matrix = []
         if isinstance(arg, tuple):
             rows, cols = arg
-            for _ in range(cols):
-                for _ in range(rows):
-                    self.__matrix = val
+            for _ in range(rows):
+                row_ = []
+                for _ in range(cols):
+                    row_.append(val)
+                self.__matrix.append(row_)
         else:
-            for value in range(row):
-                for row in range(arg):
-                    self.__matrix = value
-
-        self.rows = rows
-        self.cols = cols
+            for row in arg:
+                row_ = []
+                for value in row:
+                    row_.append(value)
+                self.__matrix.append(row_)
     
     def size(self):
         rows = len(self.__matrix)
@@ -33,7 +36,7 @@ class Matrix:
 
         for i in range(r1):
             for j in range(c1):
-                result[i,j] = self[i,j] + other[i,j]
+                result[i][j] = self[i][j] + other[i][j]
         return result
     
     def __mul__(self, other):
@@ -49,8 +52,8 @@ class Matrix:
             for j in range(c2):
                 suma = 0
                 for k in range(c1):
-                    suma += self[i,k] * other[k,j]
-                result[i,j] = suma
+                    suma += self[i][k] * other[k][j]
+                result[i][j] = suma
         return result
     
     def __eq__(self, other):
@@ -64,16 +67,34 @@ class Matrix:
 
         for i in range(r):
             for j in range(c):
-                if self[i,j] != other[i,j]:
+                if self[i][j] != other[i][j]:
                     return False
         return True
     
-    def
+    def __str__(self):
+        result = ""
+        for row in self.__matrix:
+            result += "| "
+            for elem in row:
+                result += str(elem) + " "
+            result += "|\n"
+        return result
                 
 def transpose(matrix: Matrix):
     r,c = matrix.size()
     res = Matrix((c,r))
     for i in range(r):
         for j in range(c):
-            res[i,j] = matrix[j,i]
+            res[j][i] = matrix[i][j]
     return res
+
+def main():
+    m1 = Matrix([[1,0,2],[-1,3,1]])
+    m2 = Matrix((2,3), 1)
+    m3 = Matrix([[3,1],[2,1],[1,0]])
+    print(transpose(m1))
+    print(m1 + m2)
+    print(m1 * m3)
+
+if __name__ == "__main__":
+    main()
