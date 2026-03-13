@@ -15,7 +15,8 @@ class Linked_list:
     def append(self, data):
         node_to_add = Node(data)
         if self.is_empty() == True:
-            return node_to_add
+            self.head = node_to_add
+            return
         
         current_node = self.head
         while current_node.next:
@@ -90,7 +91,7 @@ def main():
 
     linked_list.remove()
 
-    print(linked_list.head)
+    print(linked_list.head.data)
 
     linked_list.remove_end()
 
