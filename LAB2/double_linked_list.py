@@ -3,42 +3,56 @@ from typing import List
 class Linked_list:
     def __init__(self):
         self.head = None
+        self.tail = None
     
     def destroy(self):
+        current_node = self.head 
+        while current_node:
+            next_node = current_node.next
+            current_node.prev = None
+            current_node.next =  None
+            current_node = next_node
         self.head = None
 
     def add(self, data):
         new_node = Node(data)
+        if self.is_empty() == True:
+            self.head = new_node
+            self.tail = new_node
+            return
         new_node.next = self.head
+        self.head.prev = new_node
         self.head = new_node
 
     def append(self, data):
-        node_to_add = Node(data)
+        new_node = Node(data)
         if self.is_empty() == True:
-            self.head = node_to_add
+            self.head = new_node
+            self.tail = new_node
             return
-        
-        current_node = self.head
-        while current_node.next:
-            current_node = current_node.next
-        current_node.next = node_to_add
+        new_node.prev = self.tail
+        self.tail.next = new_node
+        self.tail = new_node
 
     def remove(self):
-        if self.is_empty() != True:
-            self.head = self.head.next
+        if self.is_empty() == True:
+            return None
+        if self.length() == 1:
+            self.head = None
+            self.tail = None
+            return
+        self.head = self.head.next
+        self.head.prev = None
 
     def remove_end(self):
         if self.is_empty() == True:
             return None
-        
         if self.length() == 1:
             self.head = None
-            return None
-        
-        current_node = self.head
-        while current_node.next.next:
-            current_node = current_node.next
-        current_node.next = None
+            self.tail = None
+            return
+        self.tail = self.tail.prev
+        self.tail.next = None
 
     def is_empty(self):
         return self.head is None
@@ -62,12 +76,18 @@ class Linked_list:
             print(f'-> {current_node.data}\n')
             current_node = current_node.next
 
-            
+    def displ_back(self):
+        current_node = self.tail
+        while current_node:
+            print(f'-> {current_node.data}\n')
+            current_node = current_node.prev
+
 
 class Node:
     def __init__(self, data):
         self.data = data
         self.next = None
+        self.prev = None
 
 def main():
     List = [('AGH', 'Kraków', 1919),
@@ -86,6 +106,7 @@ def main():
         linked_list.add(List[i])
 
     linked_list.display()
+    linked_list.displ_back()
 
     print(linked_list.length())
 
@@ -96,6 +117,7 @@ def main():
     linked_list.remove_end()
 
     linked_list.display()
+    linked_list.displ_back()
 
     #empty list
     linked_list.destroy()
@@ -112,7 +134,6 @@ def main():
 
     print(linked_list.is_empty())
 
-    
 
 if __name__ == "__main__":
     main()
