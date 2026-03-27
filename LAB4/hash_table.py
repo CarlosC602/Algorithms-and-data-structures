@@ -1,3 +1,5 @@
+DELETED = object()
+
 class Elem:
     def __init__(self, key, val):
         self.key = key
@@ -23,29 +25,27 @@ class static_tab:
     
     def resolve_collision(self, base_idx, key):
         k = 1
-        while True:
+        while k < self.size:
             idx = (base_idx + self.c1 * k + self.c2 * k ** 2) % self.size
             k += 1
-            if self.tab[idx] is None or self.tab[idx].key == key:
+            if self.tab[idx] is None:
                 return idx
-            if k == self.size:
-                return None
+            if self.tab[idx] is not DELETED and self.tab[idx].key == key:
+                return idx
+        return None
             
     def search(self, key):
         base_idx = self.hash(key)
-        if self.tab[base_idx] is not None and self.tab[base_idx].key == key:
+        if self.tab[base_idx] is not None and self.tab[base_idx].key == key and self.tab[base_idx] is not DELETED:
             return self.tab[base_idx].val
         idx = self.resolve_collision(base_idx, key)
-        if idx is None:
+        if idx is None or self.tab[idx] is None or self.tab[idx] is DELETED:
             return None
-        if self.tab[idx] == None:
-            return None
-        else:
-            return self.tab[idx].val
+        return self.tab[idx].val
     
     def insert(self, val, key):
         idx = self.hash(key)
-        if self.tab[idx] == None:
+        if self.tab[idx] is None or self.tab[idx] is DELETED:
             self.tab[idx] = Elem(key, val)
             return
         if self.tab[idx].key == key:
@@ -54,7 +54,7 @@ class static_tab:
         idx = self.resolve_collision(idx, key)
         if idx is None:
             return None, "Lack of space"
-        if self.tab[idx] == None:
+        if self.tab[idx] is None or self.tab[idx] is DELETED:
             self.tab[idx] = Elem(key, val)
             return
         if self.tab[idx].key == key:
@@ -63,11 +63,11 @@ class static_tab:
 
     def remove(self, key):
         base_idx = self.hash(key)
-        if self.tab[base_idx] is not None and self.tab[base_idx].key == key:
+        if self.tab[base_idx] is not None and self.tab[base_idx].key == key and self.tab[base_idx] is not DELETED:
             self.tab[base_idx] = None
         idx = self.resolve_collision(base_idx, key)
-        if idx != None and self.tab[idx] != None and self.tab[idx].key == key:
-            self.tab[idx] = None
+        if idx != None and self.tab[idx] != None and self.tab[idx].key == key and self.tab[idx] is not DELETED:
+            self.tab[idx] = DELETED
         return
 
     def __str__(self):
@@ -77,6 +77,8 @@ class static_tab:
                 str += f'{self.tab[i].key}:{self.tab[i].val}'
                 if i < self.size - 1:
                     str += ', '
+            elif self.tab[i] is DELETED:
+                str += 'DELETED, '
             else:
                 str += 'None, '
         str += '}'
