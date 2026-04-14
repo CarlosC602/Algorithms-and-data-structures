@@ -63,7 +63,7 @@ class Queue:
                 break
 
             else:
-                self.table[max_idx], self.table[idx] = self.table[max_idx], self.table[right]
+                self.table[max_idx], self.table[idx] = self.table[idx], self.table[max_idx]
             idx = max_idx
 
     def enqueue(self, element):
@@ -100,9 +100,21 @@ class Queue:
 def main():
     queue = Queue()
     list = [7, 5, 1, 2, 5, 3, 4, 8, 9]
-    list1 = ['G', 'R', 'Y', 'M', 'O', 'T', 'Y', 'L', 'A']
+    list1 = "GRYMOTYLA"
     for priority, letter in zip(list, list1):
-        
+        elem = Elem(priority, letter)
+        queue.enqueue(elem)
+    queue.print_tree(0, 0)
+    queue.print_tab()
+    first_data = queue.dequeue()
+    print(queue.peek())
+    queue.print_tab()
+    print(first_data)
+
+    while queue.size > 0:
+        deleted_data = queue.dequeue()
+        print(deleted_data)
+    queue.print_tab()
 
 if __name__ == "__main__":
     main()
