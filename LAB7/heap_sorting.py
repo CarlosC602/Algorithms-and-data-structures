@@ -140,15 +140,15 @@ def main():
         while not heap.is_empty():
             heap.dequeue()
         print(heap.table)
-        print("STABILNE")
+        print("NIESTABILNE")
 
         #swap
         swap_sorted = swap(copy1)
         print(swap_sorted)
-        print("STABILNE")
+        print("NIESTABILNE")
 
         #shift
-        shift_sorted = swap(copy2)
+        shift_sorted = shift(copy2)
         print(shift_sorted)
         print("STABILNE")
 
@@ -172,7 +172,7 @@ def main():
         print("Czas obliczeń dla swap:", "{:.7f}".format(t_stop - t_start))
 
         t_start = time.perf_counter()
-        shift_sorted = swap(copy2)
+        shift_sorted = shift(copy2)
         t_stop = time.perf_counter()
         print(shift_sorted)
         print("Czas obliczeń dla shift:", "{:.7f}".format(t_stop - t_start))
