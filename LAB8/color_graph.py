@@ -166,7 +166,7 @@ def color_graph(graph, method='bfs'):
     
     for v_id, col in colors.items():
         v_obj = graph.get_vertex(v_id)
-        color_res.append((str(v_obj), str(col))) # Rzutujemy na str, żeby turtle ładnie to narysował
+        color_res.append((str(v_obj), str(col))) 
         if col > max_color:
             max_color = col
     return color_res
